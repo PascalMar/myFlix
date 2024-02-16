@@ -10,3 +10,21 @@ Timestamp: Fri Feb 16 2024 11:37:57 GMT+0100 (Mitteleuropäische Normalzeit)
 URL: /favicon.ico
 Timestamp: Fri Feb 16 2024 11:37:57 GMT+0100 (Mitteleuropäische Normalzeit)
 
+URL: /
+Timestamp: Fri Feb 16 2024 11:51:40 GMT+0100 (Mitteleuropäische Normalzeit)
+
+URL: /favicon.ico
+Timestamp: Fri Feb 16 2024 11:51:40 GMT+0100 (Mitteleuropäische Normalzeit)
+
+URL: /
+Timestamp: Fri Feb 16 2024 11:52:14 GMT+0100 (Mitteleuropäische Normalzeit)
+
+URL: /favicon.ico
+Timestamp: Fri Feb 16 2024 11:52:14 GMT+0100 (Mitteleuropäische Normalzeit)
+
+URL: /documentation
+Timestamp: Fri Feb 16 2024 11:53:43 GMT+0100 (Mitteleuropäische Normalzeit)
+
+URL: /favicon.ico
+Timestamp: Fri Feb 16 2024 11:53:43 GMT+0100 (Mitteleuropäische Normalzeit)
+
