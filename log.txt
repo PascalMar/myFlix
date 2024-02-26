@@ -37,3 +37,5 @@ Timestamp: Fri Feb 16 2024 12:02:01 GMT+0100 (Mitteleuropäische Normalzeit)
 URL: /favicon.ico
 Timestamp: Fri Feb 16 2024 12:02:01 GMT+0100 (Mitteleuropäische Normalzeit)
 
+::1 - - [26/Feb/2024:15:53:58 +0000] "GET /movies HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+::1 - - [26/Feb/2024:15:54:02 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
