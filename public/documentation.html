@@ -1,11 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    Document here
+    <p>
+        CREATE User
+        Description: Creates a new user and adds them to the user list.
+        Endpoint URL: POST /users
+        Method Type: POST
+        Query Parameters: None
+        Format of data expected in the body of the request (and an example):
+        {
+        "name": "John Doe"
+        }
+
+        Format of response data:
+        {
+        "id": "c082f99e-1617-42ff-8342-285b3c630129",
+        "name": "John Doe"
+        }
+
+        UPDATE User
+        Description: Updates the name of an existing user based on their ID.
+        Endpoint URL: PUT /users/:id
+        Method Type: PUT
+        Query Parameters: id (User ID)
+        Format of data expected in the body of the request (and an example):
+        {
+        "name": "Jane Doe"
+        }
+
+        Format of response data:
+        {
+        "id": "c082f99e-1617-42ff-8342-285b3c630129",
+        "name": "Jane Doe"
+        }
+
+        ADD Favorite Movie
+        Description: Adds a movie to a user's favorites list.
+        Endpoint URL: POST /users/:id/:movieTitle
+        Method Type: POST
+        Query Parameters: id (User ID), movieTitle (Movie Title)
+        Format of data expected in the body of the request (and an example):
+        Format of response data: Text message
+
+        DELETE Favorite Movie
+        Description: Removes a movie from a user's favorites list.
+        Endpoint URL: DELETE /users/:id/:movieTitle
+        Method Type: DELETE
+        Query Parameters: id (User ID), movieTitle (Movie Title)
+        Format of data expected in the body of the request (and an example):
+        Format of response data: Text message
+
+        DELETE User
+        Description: Deletes a user based on their ID.
+        Endpoint URL: DELETE /users/:id
+        Method Type: DELETE
+        Query Parameters: id (User ID)
+        Format of data expected in the body of the request (and an example):
+        Format of response data: Text message
+
+        Get All Movies
+        Description: Retrieves a list of all movies.
+        Endpoint URL: GET /movies
+        Method Type: GET
+        Query Parameters: None
+        Format of data expected in the body of the request (and an example):
+        Format of response data: List of movies
+
+        Get Movie by Title
+        Description: Retrieves a single movie by its title.
+        Endpoint URL: GET /movies/:title
+        Method Type: GET
+        Query Parameters: title (Movie Title)
+        Format of data expected in the body of the request (and an example):
+        Format of response data: Single movie
+
+        Get Director by Name
+        Description: Retrieves a director by their name.
+        Endpoint URL: GET /movies/directors/:directorName
+        Method Type: GET
+        Query Parameters: directorName (Director Name)
+        Format of data expected in the body of the request (and an example):
+        Format of response data: Director's name
+
+    </p>
+
 </body>
+
 </html>
