@@ -25,8 +25,6 @@ app.use(morgan('combined', { stream: accessLogStream }));
 
 
 
-
-
 // CREATE
 app.post('/users', async (req, res) => {
     await Users.findOne({ Username: req.body.Username })
@@ -87,10 +85,10 @@ app.put('/users/:Username', async (req, res) => {
 
 // Add a movie to a user's list of favorites
 app.post('/users/:Username/movies/:MovieID', async (req, res) => {
-    await Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $push: { FavoriteMovies: req.params.MovieID }
-    },
-        { new: true }) // This line makes sure that the updated document is returned
+    await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $push: { FavoriteMovies: req.params.MovieID } },
+        { new: true })
         .then((updatedUser) => {
             res.json(updatedUser);
         })
@@ -100,13 +98,11 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
         });
 });
 
-// DELETE 
-app.delete("/users/:username/movies/:title", async (req, res) => {
+// Delete a movie from a user's list of favorites 
+app.delete("/users/:Username/movies/:MovieID", async (req, res) => {
     await Users.findOneAndUpdate(
-        { UserName: req.params.username },
-        {
-            $pull: { FavoriteMovies: req.params.title },
-        },
+        { Username: req.params.Username },
+        { $pull: { FavoriteMovies: req.params.MovieID }, },
         { new: true }
     )
         .then((updatedUser) => {
@@ -128,18 +124,6 @@ app.delete('/users/:Username', async (req, res) => {
             } else {
                 res.status(200).send(req.params.Username + ' was deleted.');
             }
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-});
-
-// Get all users
-app.get('/users', async (req, res) => {
-    await Users.find()
-        .then((users) => {
-            res.status(201).json(users);
         })
         .catch((err) => {
             console.error(err);
@@ -171,16 +155,24 @@ app.get('/movies', async (req, res) => {
         });
 });
 
-// Gets a single movie by movie name
-app.get('/movies/:Title', async (req, res) => {
-    await Movies.findOne({ Title: req.params.Title })
-        .then((movie) => {
-            res.json(movie);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
+// Gets a description from a specific genre 
+app.get('/genres/:GenreName/description', async (req, res) => {
+    const { GenreName } = req.params;
+
+    try {
+        // Finde den ersten Film mit dem angegebenen Genre
+        const movie = await Movies.findOne({ "Genre.Name": GenreName });
+
+        if (!movie) throw new Error('No movies found with the specified genre');
+
+        // Extrahiere die Beschreibung des Genres aus dem Filmobjekt
+        const genreDescription = movie.Genre.Description;
+
+        res.json({ Description: genreDescription });
+    } catch (err) {
+        console.error(err);
+        res.status(404).send('Error: ' + err.message);
+    }
 });
 
 // Gets a Director by Name
@@ -195,6 +187,10 @@ app.get('/directors/:Name', async (req, res) => {
         });
 
 });
+
+
+
+
 
 /// Error handler function
 
