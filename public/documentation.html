@@ -2,96 +2,136 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
-  <p>
-    CREATE User
-Description: Creates a new user and adds them to the user list.
-Endpoint URL: POST /users
-Method Type: POST
-Query Parameters: None
-Format of data expected in the body of the request (and an example):
-{
-  "Username": "JohnDoe",
-  "Password": "Password123",
-  "Email": "john.doe@example.com",
-  "Birthday": "1990-01-01"
-}
-Format of response data:
-{
-  "id": "c082f99e-1617-42ff-8342-285b3c630129",
-  "Username": "JohnDoe",
-  "Email": "john.doe@example.com",
-  "Birthday": "1990-01-01"
-}
+  <h2>ENDPOINTS AND URLs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>REQUEST</th>
+        <th>URL</th>
+        <th>HTTP METHOD</th>
+        <th>REQUEST BODY DATA FORMAT</th>
+        <th>RESPONSE BODY DATA FORMAT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CREATE User</td>
+        <td>POST /users</td>
+        <td>POST</td>
+        <td>
+          A JSON object holding data about the user to add, structured like:<br />
+          <code>
+                      {
+                        "Username": "JohnDoe",
+                        "Password": "Password123",
+                        "Email": "john.doe@example.com",
+                        "Birthday": "1990-01-01"
+                      }
+                  </code>
+        </td>
+        <td>
+          A JSON object holding data about a userid, username, email, password, birthDate, favorite movies. Example:<br>
+          <code>
+                      {
+                        "id": "c082f99e-1617-42ff-8342-285b3c630129",
+                        "Username": "JohnDoe",
+                        "Email": "john.doe@example.com",
+                        "Birthday": "1990-01-01"
+                      }
+                  </code>
+        </td>
+      </tr>
+      <tr>
+        <td>UPDATE User</td>
+        <td>PUT /users/:id</td>
+        <td>PUT</td>
+        <td>
+          A JSON object holding data to be updated <br>
+          <code>
+                      {
+                        "Username": "JaneDoe",
+                        "Password": "NewPassword123",
+                        "Email": "jane.doe@example.com",
+                        "Birthday": "1990-01-01"
+                      }
+                  </code>
+        </td>
+        <td>
+          A JSON object holding data about a single movie, id, title, genre, director. Example:<br>
+          <code>
+                      {
+                        "id": "c082f99e-1617-42ff-8342-285b3c630129",
+                        "Username": "JaneDoe",
+                        "Email": "jane.doe@example.com",
+                        "Birthday": "1990-01-01"
+                      }
+                  </code>
+        </td>
+      </tr>
+      <tr>
+        <td>ADD Favorite Movie</td>
+        <td>POST /users/:Username/movies/:MovieID</td>
+        <td>POST</td>
+        <td>None</td>
+        <td>
+          A JSON object holding data about a single movie, title, genre, director. Example:<br>
+          <code>
+                      {
+                        "_id": ObjectId(12345678900),
+                        "username": "JaneDoe",
+                        "password": "NewPassword123",
+                        "email": "jane.doe@example.com",
+                        "birthDate": { "$date": "1990-01-01T00:00:00.000Z"},
+                        "favoriteMovies": ["Interstellar"]
+                      }
+                  </code>
+        </td>
+      </tr>
+      <tr>
+        <td>DELETE Favorite Movie</td>
+        <td>DELETE /users/:Username/movies/:MovieID</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating whether the movie was successfully removed.</td>
+      </tr>
+      <tr>
+        <td>DELETE User</td>
+        <td>DELETE /users/:Username</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating whether the user was successfully deleted.</td>
+      </tr>
+      <tr>
+        <td>Get All Movies</td>
+        <td>GET /movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about all movies</td>
+      </tr>
+      <tr>
+        <td>Get Movie by Title</td>
+        <td>GET /movies/:Title</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about the specified movie</td>
+      </tr>
+      <tr>
+        <td>Get Director by Name</td>
+        <td>GET /directors/:Name</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about the specified director</td>
+      </tr>
+    </tbody>
+  </table>
 
-UPDATE User
-Description: Updates the username of an existing user based on their ID.
-Endpoint URL: PUT /users/:id
-Method Type: PUT
-Query Parameters: id (User ID)
-Format of data expected in the body of the request (and an example):
-{
-  "Username": "JaneDoe",
-  "Password": "NewPassword123",
-  "Email": "jane.doe@example.com",
-  "Birthday": "1990-01-01"
-}
-Format of response data:
-{
-  "id": "c082f99e-1617-42ff-8342-285b3c630129",
-  "Username": "JaneDoe",
-  "Email": "jane.doe@example.com",
-  "Birthday": "1990-01-01"
-}
 
-ADD Favorite Movie
-Description: Adds a movie to a user's favorites list.
-Endpoint URL: POST /users/:Username/movies/:MovieID
-Method Type: POST
-Query Parameters: Username (User's username), MovieID (Movie ID)
-Format of response data: Text message
-
-DELETE Favorite Movie
-Description: Removes a movie from a user's favorites list.
-Endpoint URL: DELETE /users/:Username/movies/:MovieID
-Method Type: DELETE
-Query Parameters: Username (User's username), MovieID (Movie ID)
-Format of response data: Text message
-
-DELETE User
-Description: Deletes a user based on their username.
-Endpoint URL: DELETE /users/:Username
-Method Type: DELETE
-Query Parameters: Username (User's username)
-Format of response data: Text message
-
-Get All Movies
-Description: Retrieves a list of all movies.
-Endpoint URL: GET /movies
-Method Type: GET
-Query Parameters: None
-Format of response data: List of movies
-
-Get Movie by Title
-Description: Retrieves a single movie by its title.
-Endpoint URL: GET /movies/:Title
-Method Type: GET
-Query Parameters: Title (Movie title)
-Format of response data: Single movie
-
-Get Director by Name
-Description: Retrieves a director by their name.
-Endpoint URL: GET /directors/:Name
-Method Type: GET
-Query Parameters: Name (Director's name)
-Format of response data: Director's name
-
-  </p>
 
 </body>
 
