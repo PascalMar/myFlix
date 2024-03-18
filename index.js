@@ -1,3 +1,12 @@
+const express = require('express'),
+    bodyParser = require('body-parser'),
+    uuid = require('uuid'),
+    morgan = require('morgan'),
+    fs = require('fs'),
+    path = require('path');
+
+const app = express();
+
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const bcrypt = require('bcrypt');
@@ -10,6 +19,16 @@ const Directors = Models.Director;
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
+
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' })
+
+app.use(express.static('public'));
+app.use(bodyParser.json());
+
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin) return callback(null, true);
@@ -21,24 +40,6 @@ app.use(cors({
     }
 }));
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true });
-
-
-const express = require('express'),
-    bodyParser = require('body-parser'),
-    uuid = require('uuid'),
-    morgan = require('morgan'),
-    fs = require('fs'),
-    path = require('path');
-
-const app = express();
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' })
-
-app.use(express.static('public'));
-app.use(bodyParser.json());
-
 let auth = require('./auth')(app);
 
 const passport = require('passport');
@@ -49,7 +50,7 @@ app.use(morgan('combined', { stream: accessLogStream }));
 
 app.get('/', (req, res) => {
     res.send('This is my server');
-  });
+});
 
 
 
@@ -233,6 +234,6 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() => {
- console.log('Listening on Port ' + port);
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on Port ' + port);
 });
