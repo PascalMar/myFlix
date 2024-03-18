@@ -20,9 +20,25 @@ const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 
+
+// connects to local databse
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
+
+// connects to MongoDB Atlas database
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connection.on('connected', () => {
+    console.log('MongoDB connected successfully');
+});
+
+mongoose.connection.on('error', (err) => {
+    console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('MongoDB disconnected');
+});
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' })
 
