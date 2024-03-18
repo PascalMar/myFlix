@@ -47,6 +47,10 @@ require('./passport');
 // app.use(morgan('common'));
 app.use(morgan('combined', { stream: accessLogStream }));
 
+app.get('/', (req, res) => {
+    res.send('This is my server');
+  });
+
 
 
 // CREATE
