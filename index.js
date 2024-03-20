@@ -17,7 +17,8 @@ const Users = Models.User;
 const Directors = Models.Director;
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+
 
 
 
@@ -28,33 +29,13 @@ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 // connects to MongoDB Atlas database
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connection.on('connected', () => {
-    console.log('MongoDB connected successfully');
-});
-
-mongoose.connection.on('error', (err) => {
-    console.error('MongoDB connection error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-    console.log('MongoDB disconnected');
-});
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' })
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
-            let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-            return callback(new Error(message), false);
-        }
-        return callback(null, true);
-    }
-}));
+app.use(cors());
 
 let auth = require('./auth')(app);
 
@@ -114,11 +95,13 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
     if (req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
     }
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
     await Users.findOneAndUpdate({ Username: req.params.Username }, {
         $set:
         {
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
         }
@@ -186,6 +169,18 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
     await Users.findOne({ Username: req.params.Username })
         .then((user) => {
             res.json(user);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+// Get a movie by title
+app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    await Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            res.json(movie);
         })
         .catch((err) => {
             console.error(err);
