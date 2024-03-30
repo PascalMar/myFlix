@@ -188,6 +188,8 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
         });
 });
 
+
+
 // Gets the list of data about ALL movies
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.find()
