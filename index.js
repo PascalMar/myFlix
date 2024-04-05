@@ -117,19 +117,29 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
 });
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    await Users.findOneAndUpdate(
-        { Username: req.params.Username },
-        { $push: { FavoriteMovies: req.params.MovieID } },
-        { new: true })
-        .then((updatedUser) => {
-            res.json(updatedUser);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error:' + err);
-        });
-});
+app.post(
+    "/users/:username/movies/:title",
+    passport.authenticate("jwt", { session: false }),
+    async (req, res) => {
+        await Movies.findOne({ Title: req.params.title })
+            .then(async (movie) => {
+                if (!movie) {
+                    return res.status(404).json({ error: "Movie not found" });
+                }
+                await Users.findOneAndUpdate(
+                    { UserName: req.params.Username },
+                    { $push: { FavoriteMovies: req.params.title } },
+                    { new: true }
+                )
+                    .then((updatedUser) => {
+                        res.json(updatedUser);
+                    })
+            })
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send("Error: " + error);
+            });
+    });
 
 // Delete a movie from a user's list of favorites 
 app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -179,14 +189,14 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
 // GET users list
 app.get("/users", passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Users.find()
-      .then((users) => {
-        res.status(200).json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
-  });
+        .then((users) => {
+            res.status(200).json(users);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
 
 // Get a movie by title
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
