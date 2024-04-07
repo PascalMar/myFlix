@@ -127,7 +127,7 @@ app.post(
                     return res.status(404).json({ error: "Movie not found" });
                 }
                 await Users.findOneAndUpdate(
-                    { Username: req.params.Username },
+                    { Username: req.params.username },
                     { $push: { FavoriteMovies: req.params.title } },
                     { new: true }
                 )
