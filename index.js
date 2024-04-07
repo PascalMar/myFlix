@@ -127,7 +127,7 @@ app.post(
                     return res.status(404).json({ error: "Movie not found" });
                 }
                 await Users.findOneAndUpdate(
-                    { UserName: req.params.Username },
+                    { Username: req.params.Username },
                     { $push: { FavoriteMovies: req.params.title } },
                     { new: true }
                 )
@@ -142,10 +142,10 @@ app.post(
     });
 
 // Delete a movie from a user's list of favorites 
-app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete("/users/:Username/movies/:title", passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Users.findOneAndUpdate(
         { Username: req.params.Username },
-        { $pull: { FavoriteMovies: req.params.MovieID }, },
+        { $pull: { FavoriteMovies: req.params.title }, },
         { new: true }
     )
         .then((updatedUser) => {
